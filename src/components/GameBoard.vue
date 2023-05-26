@@ -2,7 +2,7 @@
   <div class="game-board">
     <div class="game-courts">
       <div
-        v-for="(courtRow, index) in courts"
+        v-for="(courtRow, index) in props.courts"
         :key="index"
         class="game-courts__row"
       >
@@ -11,7 +11,7 @@
           :key="idx"
           class="court"
           :disabled="court.length"
-          @click="$emit('clicked')"
+          @click="$emit('selected', index, idx)"
         >
           {{ court }}
         </button>
@@ -20,19 +20,9 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
-export default {
-  setup() {
-    const courts = ref([]);
-    courts.value = [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""],
-    ];
-    return { courts };
-  },
-};
+<script setup>
+import { defineProps } from "vue";
+const props = defineProps(["courts"]);
 </script>
 
 <style>
@@ -59,6 +49,8 @@ export default {
   transition: background 0.3s ease;
   border: none;
   background: #fff;
+  font-size: 20px;
+  color: #333;
 }
 
 .court:hover,

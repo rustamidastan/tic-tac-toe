@@ -2,24 +2,43 @@
   <div class="wrapper">
     <h2 class="title">Tic-Tac-Toe</h2>
     <main>
-      <GameSidebar />
-      <GameBoard />
+      <GameSidebar :next="activePlayer" :winner="winner" />
+      <GameBoard :courts="courts" @selected="selectCourt" />
       <StepsBar />
     </main>
   </div>
 </template>
 
-<script>
+<script setup>
 import GameSidebar from "./components/GameSidebar";
 import GameBoard from "./components/GameBoard";
 import StepsBar from "./components/StepsBar";
-export default {
-  name: "App",
-  components: { GameSidebar, GameBoard, StepsBar },
+
+import { ref, computed } from "vue";
+
+const courts = ref([
+  ["", "", ""],
+  ["", "", ""],
+  ["", "", ""],
+]);
+const winner = ref("");
+
+const flag = ref(true);
+const activePlayer = computed(() => {
+  return flag.value ? "X" : "O";
+});
+const selectCourt = (index, idx) => {
+  courts.value[index][idx] = activePlayer.value;
+  flag.value = !flag.value;
 };
 </script>
 
 <style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
